@@ -76,12 +76,27 @@ namespace GTANEasyEventHook.Test
 		[TestMethod]
 		public void CanUnregisterHandler()
 		{
-			var easyEvenHook = CreateEasyEventHook();
-			var eventHandlingClassMock = RegisterAndTriggerDefaultHandler(easyEvenHook);
+			var easyEventHook = CreateEasyEventHook();
+			var eventHandlingClassMock = RegisterAndTriggerDefaultHandler(easyEventHook);
 
-			easyEvenHook.UnregisterHandler(eventHandlingClassMock.Object, nameof(EventHandlingClass.HandlerWithVariousParameters));
+			easyEventHook.UnregisterHandler(eventHandlingClassMock.Object, nameof(EventHandlingClass.HandlerWithVariousParameters));
 
 			TriggerDefaultEvent();
+
+			eventHandlingClassMock.Verify(ehc => ehc.HandlerWithVariousParameters(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<ExampleEnum>()), Times.Once);
+		}
+
+		[TestMethod]
+		public void CanCallEventWithAlternameName()
+		{
+			const string alternateEventName = "alternate_name";
+
+			var easyEventHook = CreateEasyEventHook();
+
+			var eventHandlingClassMock = new Mock<EventHandlingClass>();
+			easyEventHook.RegisterHandler(eventHandlingClassMock.Object, nameof(EventHandlingClass.HandlerWithVariousParameters), alternateEventName);
+
+			ServerEventTriggerEvent(null, alternateEventName, StringArgument, IntArgument, ExampleEnumValue);
 
 			eventHandlingClassMock.Verify(ehc => ehc.HandlerWithVariousParameters(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<ExampleEnum>()), Times.Once);
 		}
@@ -90,8 +105,8 @@ namespace GTANEasyEventHook.Test
 		[ExpectedException(typeof(IndexOutOfRangeException))]
 		public void CallingWithTooLittleArgumentsThrowsError()
 		{
-			var easyEvenHook = CreateEasyEventHook();
-			RegisterTestHandler(easyEvenHook);
+			var easyEventHook = CreateEasyEventHook();
+			RegisterTestHandler(easyEventHook);
 
 			ServerEventTriggerEvent(null, nameof(EventHandlingClass.HandlerWithVariousParameters), StringArgument, IntArgument);
 		}
@@ -100,8 +115,8 @@ namespace GTANEasyEventHook.Test
 		[ExpectedException(typeof(IndexOutOfRangeException))]
 		public void CallingWithTooManyArgumentsThrowsError()
 		{
-			var easyEvenHook = CreateEasyEventHook();
-			RegisterTestHandler(easyEvenHook);
+			var easyEventHook = CreateEasyEventHook();
+			RegisterTestHandler(easyEventHook);
 
 			ServerEventTriggerEvent(null, nameof(EventHandlingClass.HandlerWithVariousParameters), StringArgument, IntArgument, ExampleEnumValue, "One Too Many");
 		}
@@ -110,8 +125,8 @@ namespace GTANEasyEventHook.Test
 		[ExpectedException(typeof(ArgumentException))]
 		public void CallingWithWrongTypeArgumentsThrowsError()
 		{
-			var easyEvenHook = CreateEasyEventHook();
-			RegisterTestHandler(easyEvenHook);
+			var easyEventHook = CreateEasyEventHook();
+			RegisterTestHandler(easyEventHook);
 
 			ServerEventTriggerEvent(null, nameof(EventHandlingClass.HandlerWithVariousParameters), IntArgument, StringArgument, ExampleEnumValue);
 		}
