@@ -38,8 +38,11 @@ The `firstArgument` and `secondArgument` will automatically be casted to `NetHan
 In the above example, it'll use the name of the method you provided (`nameof(MyEvent)`) as the event name, but it's also possible to specify a custom event name, by specifying the 3rd argument:
 
     easyEventHook.RegisterHandler(this, nameof(MyEvent), "my_event");
+
+Relevant file: [EasyEventHook.cs](https://github.com/Rene-Sackers/gta-network-easy-event-hook/blob/master/src/GTANEasyEventHook.GTA/resources/easyeh/Server/EasyEventHook.cs)
     
 **Please note:**
 In this example, I am using a pre-compiled .dll. However, GTA Network compiles using a lower version of C#, so `nameof(...)` will not work. Simply specify the name of the method it should call as the second argument in `.RegisterHandler(...)` instead.
 
     easyEventHook.RegisterHandler(this, "MyEvent", "my_event");
+
