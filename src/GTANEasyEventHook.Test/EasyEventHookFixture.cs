@@ -57,6 +57,11 @@ namespace GTANEasyEventHook.Test
 			return eventHandlingClassMock;
 		}
 
+		private static void VerifyHandlerTriggeredOnce(Mock<EventHandlingClass> eventHandlingClassMock)
+		{
+			eventHandlingClassMock.Verify(ehc => ehc.HandlerWithVariousParameters(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<ExampleEnum>()), Times.Once);
+		}
+
 		[TestMethod]
 		public void EventHandlerProperlyCalledWithcastedValues()
 		{
@@ -70,7 +75,7 @@ namespace GTANEasyEventHook.Test
 		{
 			var eventHandlingClassMock = RegisterAndTriggerDefaultHandler(CreateEasyEventHook());
 
-			eventHandlingClassMock.Verify(ehc => ehc.HandlerWithVariousParameters(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<ExampleEnum>()), Times.Once);
+			VerifyHandlerTriggeredOnce(eventHandlingClassMock);
 		}
 
 		[TestMethod]
@@ -83,7 +88,7 @@ namespace GTANEasyEventHook.Test
 
 			TriggerDefaultEvent();
 
-			eventHandlingClassMock.Verify(ehc => ehc.HandlerWithVariousParameters(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<ExampleEnum>()), Times.Once);
+			VerifyHandlerTriggeredOnce(eventHandlingClassMock);
 		}
 
 		[TestMethod]
@@ -98,7 +103,7 @@ namespace GTANEasyEventHook.Test
 
 			ServerEventTriggerEvent(null, alternateEventName, StringArgument, IntArgument, ExampleEnumValue);
 
-			eventHandlingClassMock.Verify(ehc => ehc.HandlerWithVariousParameters(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<ExampleEnum>()), Times.Once);
+			VerifyHandlerTriggeredOnce(eventHandlingClassMock);
 		}
 
 		[TestMethod]
