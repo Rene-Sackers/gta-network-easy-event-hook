@@ -88,17 +88,26 @@ namespace GTANEasyEventHook.GTA.resources.easyeh.Server
 				var methodParameter = methodParameters[parameterIndex];
 				var eventParameter = arguments[i];
 
-				try
-				{
-					methodCallParameters[parameterIndex] = Convert.ChangeType(eventParameter, methodParameter.ParameterType);
-				}
-				catch (Exception ex)
-				{
-					throw new ArgumentException($"Failed to cast value \"{eventParameter}\" to type {methodParameter.ParameterType}. See inner exception for more detail.", ex);
-				}
+				methodCallParameters[parameterIndex] = ParseEventParameterToMethodParameter(methodParameter, eventParameter);
 			}
 
 			matchingHandler.MethodInfo.Invoke(matchingHandler.ClassInstance, methodCallParameters);
+		}
+
+		private static object ParseEventParameterToMethodParameter(ParameterInfo methodParameterInfo, object eventParameter)
+		{
+			try
+			{
+				if (!methodParameterInfo.ParameterType.IsEnum)
+					return Convert.ChangeType(eventParameter, methodParameterInfo.ParameterType);
+
+				var parsedEnumValue = Enum.Parse(methodParameterInfo.ParameterType, eventParameter.ToString(), true);
+				return parsedEnumValue;
+			}
+			catch (Exception ex)
+			{
+				throw new ArgumentException($"Failed to cast value \"{eventParameter}\" to type {methodParameterInfo.ParameterType}. See inner exception for more detail.", ex);
+			}
 		}
 
 		private static bool IsFirstParameterSender(IReadOnlyCollection<ParameterInfo> methodParameters)

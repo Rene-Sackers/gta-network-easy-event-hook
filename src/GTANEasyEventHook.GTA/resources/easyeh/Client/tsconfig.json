@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"noImplicitAny": true,
+		"noEmitOnError": true,
+		"removeComments": false,
+		"sourceMap": true,
+		"target": "es6",
+		"outFile": "bin/Compiled.js"
+	},
+	"compileOnSave": true
+}

@@ -1,0 +1,10 @@
+﻿<meta>
+  <!-- Meta -->
+  <info name="Easy Event Hook" description="Easy Event Hook" author="Eraknelo" version="1.0" />
+
+	<!-- Server -->
+	<script src="Server/bin/GTANEasyEventHook.GTA.dll" type="server" lang="compiled" />
+  
+  <!-- Client -->
+  <script src="Client/bin/Compiled.js" type="client" lang="javascript" />
+</meta>

@@ -71,6 +71,17 @@ namespace GTANEasyEventHook.Test
 		}
 
 		[TestMethod]
+		public void ProperlyCastsIntToEnumValue()
+		{
+			var easyEventHook = CreateEasyEventHook();
+			var eventHandlingClassMock = RegisterTestHandler(easyEventHook);
+
+			ServerEventTriggerEvent(null, nameof(EventHandlingClass.HandlerWithVariousParameters), StringArgument, IntArgument, (int)ExampleEnumValue);
+
+			eventHandlingClassMock.Verify(ehc => ehc.HandlerWithVariousParameters(StringArgument, IntArgument, ExampleEnumValue));
+		}
+
+		[TestMethod]
 		public void CanRegisterHandler()
 		{
 			var eventHandlingClassMock = RegisterAndTriggerDefaultHandler(CreateEasyEventHook());
