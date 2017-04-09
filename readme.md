@@ -25,7 +25,7 @@ private void OnClientEventTrigger(Client sender, string eventName, params object
 This utility allows it to be completely automatically mapped, turning the code into this:
 
 ```cs
-public MainEntryPoint()
+public MyScript()
 {
 	var easyEventHook = new EasyEventHook(API);
 	easyEventHook.RegisterHandler(this, nameof(MyEvent));
